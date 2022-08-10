@@ -6,7 +6,7 @@ func TestInheritedFields(t *testing.T) {
 
 	tree := NewTree(NewNode("root", nil).Self())
 
-	tree.Root().Fields()["key1"] = "value1"
+	tree.Root().Fields()["key2"] = "value1"
 
 	node := NewNode("node1", nil)
 

@@ -71,9 +71,16 @@ func (n *node) Parent() Node {
 // SetParent -
 func (n *node) SetParent(node Node) {
 	if node == nil {
-		n.NParent = nil
+		if n.NParent != nil {
+			n.NParent.RemoveChild(n)
+			n.NParent = nil
+		}
 	} else {
-		// TODO
+		if n.Parent().Self() != nil {
+			n.Parent().RemoveChild(n)
+		}
+		n.Self().NParent = node.Self()
+		node.Self().NChilds = append(node.Self().NChilds, node.Self())
 	}
 }
 
@@ -102,7 +109,7 @@ func (n *node) AddChildNodes(nodes ...Node) error {
 		if node.Parent().Self() != nil {
 			node.Parent().RemoveChild(node)
 		}
-		node.SetParent(n)
+		node.Self().NParent = n.Self()
 		n.NChilds = append(n.NChilds, node.Self())
 	}
 	return nil
@@ -166,5 +173,6 @@ func (n *node) RemoveChild(node Node) {
 				n.NChilds = append(n.NChilds[:index], n.NChilds[index+1:]...)
 			}
 		}
+	default:
 	}
 }
