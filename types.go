@@ -22,10 +22,12 @@ type node struct {
 	NFields Fields  `json:"fields"`
 	NParent *node   `json:"-"`
 	NChilds []*node `json:"childs"`
+	NTree   *tree   `json:"-"`
 }
 
 type Node interface {
 	Self() *node
+	Tree() Tree
 	Root() Node
 	Key() string
 	SetKey(key string) error
@@ -34,7 +36,7 @@ type Node interface {
 	Parent() Node
 	SetParent(Node)
 	Childs() []Node
-	AddChildNodes(nodes ...Node) error
+	AddChilds(nodes ...Node) error
 	RemoveChild(node Node)
 	FindingNodeByKey(key string) Node
 }
