@@ -16,6 +16,6 @@ func TestInheritedFields(t *testing.T) {
 
 	t.Log(node.InheritedFields())
 
-	tree.SaveAsJSON("", "./home")
+	tree.SaveAsJSON("", "")
 
 }

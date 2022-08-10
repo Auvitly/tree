@@ -26,7 +26,7 @@ func NewTree(root *node) Tree {
 	return tree
 }
 
-// Self
+// Self - returns a pointer to the structure that is under the interface
 func (t *tree) Self() *tree {
 	return t
 }
@@ -74,6 +74,11 @@ func (t *tree) SetRoot(node Node) error {
 // FindByKey - search by node key in tree (depth-first search)
 func (t *tree) FindByKey(key string) Node {
 	return t.TRoot.FindingNodeByKey(key)
+}
+
+// FindByValue - search by node value in tree (depth-first search)
+func (t *tree) FindByValue(value interface{}) []Node {
+	return t.TRoot.FindingNodesByValue(value)
 }
 
 // Separate - branching a new tree from a node in the original tree

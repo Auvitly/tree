@@ -10,6 +10,7 @@ type Tree interface {
 	Root() Node
 	SetRoot(node Node) error
 	FindByKey(key string) Node
+	FindByValue(value interface{}) []Node
 	Separate(node *node) (Tree, error)
 	SaveAsJSON(name, path string) error
 }
