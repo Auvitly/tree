@@ -10,12 +10,14 @@ func TestInheritedFields(t *testing.T) {
 
 	node := NewNode("node1", nil)
 
-	tree.Root().AddChildNodes(node)
+	tree.Root().AddChilds(node)
 
 	node.Fields()["key1"] = "value"
 
-	t.Log(node.InheritedFields())
-
 	tree.SaveAsJSON("", "")
+
+	nt, _ := LoadTree("", "")
+
+	t.Log(nt)
 
 }

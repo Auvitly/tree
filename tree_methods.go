@@ -2,26 +2,26 @@ package tree
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
-	"time"
 
 	"github.com/pkg/errors"
 )
 
 // NewTree - creating a tree structure with an empty root node (key and value are empty)
-func NewTree(root *node) Tree {
+func NewTree(root Node) Tree {
 	tree := &tree{}
-	if root == nil {
+	if root.Self() == nil {
 		tree.TRoot = &node{
 			NKey:    "root",
 			NFields: make(Fields),
 			NParent: nil,
 			NChilds: make([]*node, 0),
+			NTree:   tree,
 		}
 	} else {
-		tree.TRoot = root
+		tree.TRoot = root.Self()
+		root.Self().NTree = tree
 	}
 	return tree
 }
@@ -42,7 +42,7 @@ func (t *tree) SetRoot(node Node) error {
 	root := t.TRoot.FindingNodeByKey(node.Key())
 	if root.Self() == nil {
 		// If not founded
-		node.AddChildNodes(t.Root().Childs()...)
+		node.AddChilds(t.Root().Childs()...)
 		t.TRoot = node.Self()
 		t.Root().SetParent(nil)
 		return nil
@@ -57,7 +57,7 @@ func (t *tree) SetRoot(node Node) error {
 		n2 = root.Parent()
 		n3 = root.Parent().Parent()
 		for n2.Self() != nil || n3.Self() != nil {
-			n1.AddChildNodes(n2)
+			n1.AddChilds(n2)
 			n2.RemoveChild(n1)
 			n1 = n2
 			n2 = n3
@@ -102,7 +102,7 @@ func (t *tree) SaveAsJSON(name, path string) error {
 	// Filepath definition
 	fpath := getFilepath(name, path)
 	// Create file
-	file, err := os.OpenFile(fpath, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0777)
+	file, err := os.OpenFile(fpath, os.O_CREATE|os.O_RDWR, 0777)
 	if err != nil {
 		return err
 	}
@@ -128,22 +128,8 @@ func (t *tree) SaveAsJSON(name, path string) error {
 // LoadTree - Loading a tree from a file at the specified path.
 // Returns a tree instance and an error. If the file was not found or was corrupted.
 func LoadTree(name, path string) (Tree, error) {
-	// Filename definition
-	var filename string
-	switch {
-	case len(name) == 0:
-		filename = fmt.Sprintf("tree_%s.json", time.Now().String())
-	default:
-		filename = fmt.Sprintf("%s.json", name)
-	}
-	// Path definition
-	var filepath string
-	switch {
-	case len(path) == 0:
-		filepath = filename
-	default:
-		filepath = path + filename
-	}
+	// Filepath definition
+	filepath := getFilepath(name, path)
 	// Create file
 	file, err := os.OpenFile(filepath, os.O_RDONLY, 0777)
 	if err != nil {
@@ -161,7 +147,8 @@ func LoadTree(name, path string) (Tree, error) {
 		return nil, err
 	}
 	// Fix parents
-	t.Root().Self().fixParent(t.Root().Self().NChilds)
+	t.Root().Self().NTree = t
+	t.Root().Self().loadParents(t.Root().Self().NChilds)
 
 	return t, nil
 }
@@ -174,6 +161,6 @@ func CreateTreeFromJSON(data []byte) (Tree, error) {
 		return nil, err
 	}
 	// Fix parents
-	t.Root().Self().fixParent(t.Root().Self().NChilds)
+	t.Root().Self().loadParents(t.Root().Self().NChilds)
 	return t, nil
 }

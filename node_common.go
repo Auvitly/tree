@@ -14,10 +14,11 @@ func (n *node) valueSearch(value interface{}) []string {
 	return nil
 }
 
-// fixParent
-func (n *node) fixParent(childs []*node) {
+// loadParents
+func (n *node) loadParents(childs []*node) {
 	for _, child := range childs {
+		child.NTree = n.NTree
 		child.NParent = n
-		child.fixParent(child.NChilds)
+		child.loadParents(child.NChilds)
 	}
 }

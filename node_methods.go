@@ -63,12 +63,17 @@ func (n *node) InheritedFields() Fields {
 	return fields
 }
 
-// Parent -
+// Tree
+func (n *node) Tree() Tree {
+	return n.NTree
+}
+
+// Parent
 func (n *node) Parent() Node {
 	return n.NParent
 }
 
-// SetParent -
+// SetParent
 func (n *node) SetParent(node Node) {
 	if node == nil {
 		if n.NParent != nil {
@@ -79,6 +84,7 @@ func (n *node) SetParent(node Node) {
 		if n.Parent().Self() != nil {
 			n.Parent().RemoveChild(n)
 		}
+		n.NTree = node.Self().NTree
 		n.Self().NParent = node.Self()
 		node.Self().NChilds = append(node.Self().NChilds, node.Self())
 	}
@@ -98,10 +104,10 @@ func (n *node) Childs() []Node {
 	return childs
 }
 
-// AddChildNodes - adding child nodes for the current node.
+// AddChilds - adding child nodes for the current node.
 // Child nodes are stripped of their current parent nodes.
 // The current node is set as the parent node.
-func (n *node) AddChildNodes(nodes ...Node) error {
+func (n *node) AddChilds(nodes ...Node) error {
 	for index, node := range nodes {
 		if result := n.Root().FindingNodeByKey(node.Key()); result != nil {
 			return errors.Errorf("Node key - arg[%d] already exists", index)
@@ -109,6 +115,7 @@ func (n *node) AddChildNodes(nodes ...Node) error {
 		if node.Parent().Self() != nil {
 			node.Parent().RemoveChild(node)
 		}
+		node.Self().NTree = n.NTree
 		node.Self().NParent = n.Self()
 		n.NChilds = append(n.NChilds, node.Self())
 	}
@@ -117,14 +124,7 @@ func (n *node) AddChildNodes(nodes ...Node) error {
 
 // Root - finding the root of a tree relative to the current node
 func (n *node) Root() (root Node) {
-	var p Node = n
-	for p != nil {
-		if p.Parent().Self() == nil {
-			return p
-		}
-		p = p.Parent()
-	}
-	return n
+	return n.Tree().Self().TRoot
 }
 
 // FindingNodeByKey - search for a node in the tree relative to the current node
@@ -170,6 +170,7 @@ func (n *node) RemoveChild(node Node) {
 		for index, child := range n.NChilds {
 			if node.Self() == child {
 				child.NParent = nil
+				child.NTree = nil
 				n.NChilds = append(n.NChilds[:index], n.NChilds[index+1:]...)
 			}
 		}
