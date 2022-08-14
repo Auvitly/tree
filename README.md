@@ -24,8 +24,8 @@ type Tree interface {
 	FindByValue(value interface{}) []Node
 	// Separate - allows you to split a node from a tree into a new tree. All links are removed.
 	Separate(node *node) (Tree, error)
-	// SaveAsJSON - save to json file
-	SaveAsJSON(name, path string) error
+	// JSON - marshaling to JSON
+	JSON() ([]byte, error)
 }
 ````
 

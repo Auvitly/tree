@@ -97,6 +97,13 @@ func (t *tree) Separate(node *node) (Tree, error) {
 	return tree, nil
 }
 
+// JSON - transform sucture of the tree to JSON-format
+func (t *tree) JSON() ([]byte, error) {
+	// Marshaling
+	data, err := json.Marshal(t)
+	return data, err
+}
+
 // SaveAsJSON - saves the tree to a JSON file
 func (t *tree) SaveAsJSON(name, path string) error {
 	// Filepath definition
@@ -125,7 +132,7 @@ func (t *tree) SaveAsJSON(name, path string) error {
 
 }
 
-// LoadTree - Loading a tree from a file at the specified path.
+// LoadTree - loading a tree from a file at the specified path.
 // Returns a tree instance and an error. If the file was not found or was corrupted.
 func LoadTree(name, path string) (Tree, error) {
 	// Filepath definition

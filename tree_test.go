@@ -4,19 +4,19 @@ import "testing"
 
 func TestInheritedFields(t *testing.T) {
 
-	tree := NewTree(NewNode("root", nil).Self())
+	n1, _ := NewNode("root", nil)
+
+	tree := NewTree(n1)
 
 	tree.Root().Fields()["key2"] = "value1"
 
-	node := NewNode("node1", nil)
+	node, _ := NewNode("node1", nil)
 
 	tree.Root().AddChilds(node)
 
 	node.Fields()["key1"] = "value"
 
-	tree.SaveAsJSON("", "")
-
-	nt, _ := LoadTree("", "")
+	nt, _ := LoadTree("root", "")
 
 	t.Log(nt)
 

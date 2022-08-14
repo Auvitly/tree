@@ -16,11 +16,13 @@ func getFilename(name string) string {
 	// Checking for file extension
 	var filename string
 	var nameFragments = strings.Split(name, ".")
-	switch len(nameFragments) {
-	case 1:
+	switch {
+	case len(name) == 0:
 		filename = "tree_" + time.Now().Format("01-01-2006") + ".json"
-	default:
+	case len(nameFragments) > 1:
 		filename = nameFragments[0] + ".json"
+	default:
+		filename = name + ".json"
 	}
 	return filename
 }

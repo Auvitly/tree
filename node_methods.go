@@ -5,9 +5,9 @@ import (
 )
 
 // NewNode - returns a pointer to the node structure
-func NewNode(key string, fields Fields) Node {
+func NewNode(key string, fields Fields) (Node, error) {
 	if len(key) == 0 {
-		return nil
+		return nil, ErrorNotFoundKey
 	}
 	node := &node{
 		NKey:    key,
@@ -18,7 +18,7 @@ func NewNode(key string, fields Fields) Node {
 	} else {
 		node.NFields = fields
 	}
-	return node
+	return node, nil
 }
 
 // Key - getting the key of the current node

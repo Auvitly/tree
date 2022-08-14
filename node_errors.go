@@ -5,4 +5,5 @@ import "github.com/pkg/errors"
 var (
 	ErrorNotFoundNode = errors.New("not found node")
 	ErrorAlreadyExist = errors.New("key already exist in this tree")
+	ErrorNotFoundKey  = errors.New("not found key")
 )
