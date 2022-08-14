@@ -10,21 +10,21 @@ A tree is a structure based on nodes and has a root node. For a tree, there are 
 
 ````go
 type Tree interface {
-  // Self - returns a pointer to a structure, for deeper data manipulation
+	// Self - returns a pointer to a structure, for deeper data manipulation
 	Self() *tree
-  // Root - returns the root node
+	// Root - returns the root node
 	Root() Node
-  // SetRoot - Allows you to set the node as the root node. If the node is part of a tree, 
-  //then the nodes are restructured to form a valid tree. If the node is not part of the tree, 
-  // then the root node will be added to the childs, and the added node will become the root.
+	// SetRoot - Allows you to set the node as the root node. If the node is part of a tree, 
+	//then the nodes are restructured to form a valid tree. If the node is not part of the tree, 
+	// then the root node will be added to the childs, and the added node will become the root.
 	SetRoot(node Node) error
-  // FindByKey - searches for a key within a tree
+	// FindByKey - searches for a key within a tree
 	FindByKey(key string) Node
-  // FindByValue - searches by field value within a tree 
+	// FindByValue - searches by field value within a tree 
 	FindByValue(value interface{}) []Node
-  // Separate - allows you to split a node from a tree into a new tree. All links are removed.
+	// Separate - allows you to split a node from a tree into a new tree. All links are removed.
 	Separate(node *node) (Tree, error)
-  // SaveAsJSON - save to json file
+	// SaveAsJSON - save to json file
 	SaveAsJSON(name, path string) error
 }
 ````
