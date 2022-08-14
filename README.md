@@ -15,7 +15,7 @@ type Tree interface {
 	// Root - returns the root node
 	Root() Node
 	// SetRoot - Allows you to set the node as the root node. If the node is part of a tree, 
-	//then the nodes are restructured to form a valid tree. If the node is not part of the tree, 
+	// then the nodes are restructured to form a valid tree. If the node is not part of the tree, 
 	// then the root node will be added to the childs, and the added node will become the root.
 	SetRoot(node Node) error
 	// FindByKey - searches for a key within a tree
@@ -53,6 +53,44 @@ To create a node, use the function *NewNode*. The first argument is the key, the
 	...
 	node := tree.NewNode("key",nil)
 	...
+````
+
+The main functions are presented in the Node interface:
+
+````go
+type Node interface {
+	// Self - returns a pointer to a structure, for deeper data manipulation
+	Self() *node
+	// Tree - returns the tree.
+	Tree() Tree
+	// Root - returns root of the tree.
+	Root() Node
+	// Key - returns key of current node.
+	Key() string
+	// SetKey - sets the passed value as the key. Returns an error if the key already exists in the tree.
+	SetKey(key string) error
+	// Fields - return fields of current node. Fields is map[string]interface{}
+	Fields() Fields
+	// InheritedFields - allows you to get fields that are inherited from parent nodes.
+	// If the field of the child node has the same key as the field of the parent node,
+	// then the priority is given to the child node.
+	InheritedFields() Fields
+	// Parent - returns parent current node.
+	Parent() Node
+	// SetParent - sets the passed node as the parent node. 
+	// The correctness of the tree is maintained by the appropriate reassignment of parent and child nodes
+	SetParent(Node)
+	// Childs - returns child nodes for current node.
+	Childs() []Node
+	// AddChilds - adding child nodes for the current node.
+	// Child nodes are stripped of their current parent nodes.
+	// The current node is set as the parent node.
+	AddChilds(nodes ...Node) error
+	// RemoveChild - deleting a child node for the current node
+	RemoveChild(node Node)
+	// FindingNodeByKey - search for a node in the tree relative to the current node
+	FindingNodeByKey(key string) Node
+}
 ````
 
 
