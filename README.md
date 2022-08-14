@@ -4,4 +4,4 @@
 
 This package allows you to create information **trees** based on **nodes**.
 
-<img src="./img/tree_01.png" width="300px">
+<img src="./img/tree_01.png" width="400px">
