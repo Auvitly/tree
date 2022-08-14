@@ -6,7 +6,7 @@ This package allows you to create information **trees** based on **nodes**. An e
 
 <h2> 1. Tree </h2>
 
-A tree is a structure based on nodes and has a root node. For a tree, there are a number of functions provided in Tree interface.
+A tree is a structure based on nodes and has a root node. For a tree, there are a number of functions provided by Tree interface.
 
 ````go
 type Tree interface {
@@ -29,6 +29,14 @@ type Tree interface {
 }
 ````
 
+Note that the tree can also be obtained from a JSON file using the function LoadTree.
+
+````go
+	...
+	t, _ := tree.LoadTree(name, path)
+	...
+````
+
 <h2> 2. Nodes </h2>
 
 **A node** is the main structural element of **a tree**. 
@@ -42,8 +50,10 @@ Each **node** has:
 
 To create a node, use the function *NewNode*. The first argument is the key, the second is the fields. It is allowed to create a node without specifying a second argument, however, if an empty key is specified, it will return **nil**.
 ````go
-  ...
-  node := tree.NewNode("key",nil)
-  ...
+	...
+	node := tree.NewNode("key",nil)
+	...
 ````
+
+
 
