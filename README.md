@@ -1,4 +1,7 @@
-<h1> <img src="https://img.icons8.com/external-flatart-icons-lineal-color-flatarticons/344/external-tree-autumn-flatart-icons-lineal-color-flatarticons-3.png" width="50px" align="center"> Tree</h1>
+# TREE
+Data Storage Tree
+
+<hr>
 
 This package allows you to create information **trees** based on **nodes**. An example of a tree is shown in the figure below.
 
@@ -92,6 +95,6 @@ type Node interface {
 	FindingNodeByKey(key string) Node
 }
 ````
-
+<h1> <img src="https://img.icons8.com/external-flatart-icons-lineal-color-flatarticons/344/external-tree-autumn-flatart-icons-lineal-color-flatarticons-3.png" width="50px" align="center"> Tree</h1>
 
 
